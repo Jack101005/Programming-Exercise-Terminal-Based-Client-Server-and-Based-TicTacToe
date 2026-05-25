@@ -1,5 +1,4 @@
 # Programming-Exercise-Terminal-Based-Client-Server-and-Based-TicTacToe
-# Programming-Exercise-Terminal-Based-Client-Server-and-Based-TicTacToe
 
 Scenario 1
 
