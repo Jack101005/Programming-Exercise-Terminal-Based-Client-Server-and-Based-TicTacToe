@@ -10,15 +10,10 @@ java Scenario_1.Client_TicTacToe
 
 Scenario 2
 
-<<<<<<< Updated upstream
 Compiling code: javac Scenario_1/Server_TicTacToe.java Scenario_1/Client_TicTacToe.java
                 javac Scenario_2/Server_TicTacToe.java Scenario_2/Client_TicTacToe.java
-=======
-Compiling code: 
-javac Scenario_1/Server_TicTacToe.java Scenario_1/Client_TicTacToe.java
-javac Scenario_2/Server_TicTacToe.java Scenario_2/Client_TicTacToe.java
->>>>>>> Stashed changes
 
+WithThreadPool Server compile code: javac Scenario_2/Server_TicTacToe_ThreadPool.java
 
 # From project root
 java Scenario_2.Server_TicTacToe
@@ -66,8 +61,6 @@ Compiling code: javac Scenario_3/Server_TicTacToe.java Scenario_3/Client_TicTacT
 # From project root
 java Scenario_3.Server_TicTacToe
 java Scenario_3.Client_TicTacToe
-<<<<<<< Updated upstream
-=======
 
 -------------------------------------------------------------------------------------------------
 
@@ -79,4 +72,3 @@ Give Permission Code: chmod +x crash_test.sh
 
 Run code: ./crash_test.sh
 
->>>>>>> Stashed changes
