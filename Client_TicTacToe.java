@@ -4,29 +4,51 @@ import java.util.*;
 
 public class Client_TicTacToe {
 
-public static void main (String [] args) {
+    public static void main(String[] args) {
+        try {
+            Socket s = new Socket("localhost", 3000);
+            BufferedReader in  = new BufferedReader(new InputStreamReader(s.getInputStream()));
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
+            Scanner keyboard  = new Scanner(System.in);
 
-    try {
-        Socket s = new Socket("localhost",3000);
-        BufferedReader Network_in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        BufferedWriter Network_out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-        Scanner keyboard = new Scanner(System.in);
+            // Read the first signal from the server
+            String firstMsg = in.readLine();
 
+            if ("WAIT".equals(firstMsg)) {
+                System.out.println("Server is busy. You are in the queue — please wait...");
+                // Block here until the server says it's our turn
+                String msg;
+                while ((msg = in.readLine()) != null) {
+                    if ("START".equals(msg)) break;
+                }
+                System.out.println("It's your turn now!");
+            }
+
+            System.out.println("\nGame starting! You are O. Server (X) goes first.\n");
 
             char[] board = new char[9];
             Arrays.fill(board, '.');
-            char mySymbol = 'O';
+            char mySymbol  = 'O';
             char oppSymbol = 'X';
-            boolean myTurn = false;
+            boolean myTurn = false; // Server (X) always goes first
 
             while (true) {
                 printBoard(board);
 
                 if (myTurn) {
+                    // ── Client's turn ──
                     int pos = -1;
                     while (true) {
-                        System.out.print("Your move (0-8): ");
+                        System.out.print("Your move (0-8) or 'q' to quit: ");
                         String line = keyboard.nextLine().trim();
+
+                        if (line.equalsIgnoreCase("q")) {
+                            out.write("q\n");
+                            out.flush();
+                            System.out.println("You quit the game.");
+                            s.close();
+                            return;
+                        }
                         try {
                             pos = Integer.parseInt(line);
                         } catch (NumberFormatException e) {
@@ -44,8 +66,8 @@ public static void main (String [] args) {
                         break;
                     }
                     board[pos] = mySymbol;
-                    Network_out.write(pos + "\n");
-                    Network_out.flush();
+                    out.write(pos + "\n");
+                    out.flush();
 
                     if (checkWin(board, mySymbol)) {
                         printBoard(board);
@@ -54,17 +76,31 @@ public static void main (String [] args) {
                     }
                     if (isDraw(board)) {
                         printBoard(board);
-                        System.out.println("Draw!");
+                        System.out.println("It's a draw!");
                         break;
                     }
+
                 } else {
+                    // ── Waiting for server's move ──
                     System.out.println("Waiting for opponent's move...");
-                    String line = Network_in.readLine();
+                    String line = in.readLine();
+
                     if (line == null) {
-                        System.out.println("Opponent disconnected.");
+                        System.out.println("Server disconnected.");
                         break;
                     }
-                    int pos = Integer.parseInt(line.trim());
+                    if ("QUIT".equals(line)) {
+                        System.out.println("Server quit the game.");
+                        break;
+                    }
+
+                    int pos;
+                    try {
+                        pos = Integer.parseInt(line.trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Received unexpected message: " + line);
+                        break;
+                    }
                     board[pos] = oppSymbol;
 
                     if (checkWin(board, oppSymbol)) {
@@ -74,16 +110,19 @@ public static void main (String [] args) {
                     }
                     if (isDraw(board)) {
                         printBoard(board);
-                        System.out.println("Draw!");
+                        System.out.println("It's a draw!");
                         break;
                     }
                 }
                 myTurn = !myTurn;
             }
 
-        s.close();
-        }catch(Exception e){e.printStackTrace();}
-}
+            s.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     static void printBoard(char[] b) {
         System.out.println();
         for (int row = 0; row < 3; row++) {
@@ -116,5 +155,3 @@ public static void main (String [] args) {
         return true;
     }
 }
-
-
