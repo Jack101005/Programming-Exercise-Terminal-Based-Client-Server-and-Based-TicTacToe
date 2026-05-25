@@ -10,8 +10,14 @@ java Scenario_1.Client_TicTacToe
 
 Scenario 2
 
+<<<<<<< Updated upstream
 Compiling code: javac Scenario_1/Server_TicTacToe.java Scenario_1/Client_TicTacToe.java
                 javac Scenario_2/Server_TicTacToe.java Scenario_2/Client_TicTacToe.java
+=======
+Compiling code: 
+javac Scenario_1/Server_TicTacToe.java Scenario_1/Client_TicTacToe.java
+javac Scenario_2/Server_TicTacToe.java Scenario_2/Client_TicTacToe.java
+>>>>>>> Stashed changes
 
 
 # From project root
@@ -60,3 +66,17 @@ Compiling code: javac Scenario_3/Server_TicTacToe.java Scenario_3/Client_TicTacT
 # From project root
 java Scenario_3.Server_TicTacToe
 java Scenario_3.Client_TicTacToe
+<<<<<<< Updated upstream
+=======
+
+-------------------------------------------------------------------------------------------------
+
+crash_test.sh
+
+try compile and run the server on scenario 2 first and then open a second terminal window and run the DoD file (Crash_test.sh)
+
+Give Permission Code: chmod +x crash_test.sh
+
+Run code: ./crash_test.sh
+
+>>>>>>> Stashed changes
